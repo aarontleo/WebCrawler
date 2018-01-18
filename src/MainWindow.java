@@ -1,25 +1,20 @@
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.border.Border;
 import javax.swing.event.DocumentListener;
 import static javax.swing.GroupLayout.Alignment.*;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.lang.*;
 import java.util.*;
-import java.io.IOException;
-
 
 class MainWindow extends JFrame implements ActionListener, DocumentListener
 {
 
-	public static void main(String[] args){ new MainWindow(); }
 
-	static JCheckBox 			parseAllLinks, parseImages, parseEmails, parsePersonalInfo, parseSubDomains, scanPorts, scanVersionInfo;
+
+	JCheckBox 			parseAllLinks, parseImages, parseEmails, parsePersonalInfo, parseSubDomains, scanPorts, scanVersionInfo;
 
 	JButton				executeButton, quitButton;
 
@@ -36,8 +31,9 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 	ArrayList<String> 	arrayList;
 	DefaultListModel	dlm;
 	JList				websiteList;
-	static String 		website, header;
+	String 		website, header;
 	GroupLayout			gLayout;
+	Container			cp;
 
 
 	public MainWindow()
@@ -81,10 +77,10 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		headerArea = new JTextArea(header);
 		headerArea.setEditable(false);
 
-		websiteHTMLArea = new JTextArea();
-		websiteHTMLArea.setEditable(false);
-		scrollTextArea = new JScrollPane();
-		scrollTextArea.add(websiteHTMLArea);
+		websiteHTMLArea = new JTextArea("TEST TEST TEST TEST");
+		websiteHTMLArea.setEditable(true);
+		scrollTextArea = new JScrollPane(websiteHTMLArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		//scrollTextArea.setBounds(0, 0, 200, 200);
 
 		// creating JLabels
 		checkboxLabel = new JLabel("Select parse options:");
@@ -98,21 +94,21 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		mainPanel.setLayout(gLayout);
 		GroupLayout.SequentialGroup hGroup = gLayout.createSequentialGroup();
 			hGroup.addGroup(gLayout.createParallelGroup(LEADING).addComponent(websiteFieldLabel).addComponent(parseAllLinks).addComponent(parseImages).addComponent(parseEmails).addComponent(parsePersonalInfo).addComponent(parseSubDomains).addComponent(scanPorts).addComponent(scanVersionInfo));
-			hGroup.addGroup(gLayout.createParallelGroup(TRAILING).addComponent(websiteField).addComponent(websiteHTMLArea));
+			hGroup.addGroup(gLayout.createParallelGroup(TRAILING).addComponent(websiteField).addComponent(scrollTextArea));
 		gLayout.setHorizontalGroup(hGroup);
 		GroupLayout.SequentialGroup vGroup = gLayout.createSequentialGroup();
 			vGroup.addGroup(gLayout.createParallelGroup(BASELINE).addComponent(websiteFieldLabel).addComponent(websiteField));
-			vGroup.addGroup(gLayout.createParallelGroup(LEADING).addComponent(parseAllLinks).addComponent(websiteHTMLArea));
+			vGroup.addGroup(gLayout.createParallelGroup(BASELINE).addComponent(parseAllLinks).addComponent(scrollTextArea));
 			//vGroup.addGroup(gLayout.createParallelGroup(BASELINE).addComponent(parseAllLinks).addComponent(parseImages).addComponent(scrollList));
-			//vGroup.addGroup(gLayout.createParallelGroup(BASELINE).addComponent(parseImages).addComponent(parseEmails).addComponent(parsePersonalInfo).addComponent(parseSubDomains).addComponent(scanPorts).addComponent(scanVersionInfo));
-			//vGroup.addComponent(scrollList);
+			vGroup.addGroup(gLayout.createSequentialGroup().addComponent(parseAllLinks).addComponent(parseImages).addComponent(parseEmails).addComponent(parsePersonalInfo).addComponent(parseSubDomains).addComponent(scanPorts).addComponent(scanVersionInfo));
+			vGroup.addComponent(scrollTextArea);
 			//vGroup.addComponent(parseAllLinks);
-			vGroup.addComponent(parseImages);
-			vGroup.addComponent(parseEmails);
-			vGroup.addComponent(parsePersonalInfo);
-			vGroup.addComponent(parseSubDomains);
-			vGroup.addComponent(scanPorts);
-			vGroup.addComponent(scanVersionInfo);
+			//vGroup.addComponent(parseImages);
+			//vGroup.addComponent(parseEmails);
+			//vGroup.addComponent(parsePersonalInfo);
+			//vGroup.addComponent(parseSubDomains);
+			//vGroup.addComponent(scanPorts);
+			//vGroup.addComponent(scanVersionInfo);
 		gLayout.setVerticalGroup(vGroup);
 
 		infoPanel = new JPanel();
@@ -159,10 +155,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
     	{
     		//selectedCheckBoxes();
 			startScraper();
-			//pack();
     		System.out.println("The options selected are: -> ");
-    		//execute();
-
     	}
     	else if(ae.getActionCommand().equals("QUIT"))
     	{
@@ -210,6 +203,22 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		}
 
 	}
+
+	public void updateUI()
+	{
+		cp = getContentPane();
+		cp.invalidate();
+		cp.validate();
+	}
+
+	public void updateComponent(String text)
+	{
+		System.out.println("text variable contains: " + text);
+		websiteHTMLArea.append('\n' + text);
+		//repaint();
+		System.out.println("Inside updateComponent()");
+	}
+
 
 
 }// end MainWindow class

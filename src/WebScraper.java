@@ -13,7 +13,7 @@ public class WebScraper {
 
     public WebScraper(String site)
     {
-        //window = new MainWindow();
+        window = new MainWindow();
         this.site = site;
         checkBoxes();
 
@@ -37,7 +37,9 @@ public class WebScraper {
             for(Element link : links)
             {
                 System.out.println("Link found on " + site + " , Link: -> " + link.attr("href"));
-                window.websiteHTMLArea.append(link.attr("href"));
+                //window.websiteHTMLArea.append(link.attr("href"));
+                window.updateComponent((link.attr("href")));
+                //window.updateUI();
             }
 
 
