@@ -4,26 +4,19 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.lang.*;
+import java.util.ArrayList;
 
 
 public class WebScraper {
 
-    String          site;
-    MainWindow      window;
+    String              site, websiteLink;
+    ArrayList<String>   websiteList;
 
     public WebScraper(String site)
     {
-        window = new MainWindow();
+        websiteList = new ArrayList<>();
         this.site = site;
-        checkBoxes();
-
-    }
-
-    public void checkBoxes()
-    {
-        if(window.parseAllLinks.isSelected()){
-                scrapeLinks();
-        }
+        scrapeLinks();
     }
 
 
@@ -37,17 +30,17 @@ public class WebScraper {
             for(Element link : links)
             {
                 System.out.println("Link found on " + site + " , Link: -> " + link.attr("href"));
-                //window.websiteHTMLArea.append(link.attr("href"));
-                window.updateComponent((link.attr("href")));
-                //window.updateUI();
+                websiteLink = link.attr(("href"));
+                websiteList.add(websiteLink);
             }
-
-
         }
         catch(Exception e){
             e.printStackTrace();
         }
+    }
 
+    public ArrayList<String> getLinks(){
+        return websiteList;
     }
 
 }

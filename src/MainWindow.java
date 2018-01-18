@@ -24,26 +24,22 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 
 	JLabel				checkboxLabel, websiteFieldLabel;
 
-	JPanel				headerPanel, checkboxPanel, buttonPanel, infoPanel, mainPanel ,websitePanel;
+	JPanel				buttonPanel, infoPanel, mainPanel;
 
-	JScrollPane			scrollList, scrollTextArea;
+	JScrollPane			scrollTextArea;
 
-	ArrayList<String> 	arrayList;
-	DefaultListModel	dlm;
-	JList				websiteList;
+	ArrayList<String> 	websiteList;
+
 	String 				website, header;
-	//GroupLayout		gLayout;
-	GridBagLayout		bagLayout;
 	GridBagConstraints	bagConstraints;
 	Container			cp;
+	WebScraper          webScraper;
 
 
 	public MainWindow()
 	{
 		// initializing dependent variables
-		arrayList = new ArrayList<>();
-		dlm = new DefaultListModel();
-		websiteList	= new JList(dlm);
+		websiteList = new ArrayList<>();
 		header = "Filler text --------------------------------------------------------------------\n" +
 							"---------------------------------------------------------------------------------";
 
@@ -134,7 +130,9 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		bagConstraints.gridx = 1;
 		bagConstraints.gridy = 1;
 		bagConstraints.gridheight = 7;
-		websiteHTMLArea.setEditable(true);
+		bagConstraints.ipadx = 0;
+		bagConstraints.ipady = 0;
+		websiteHTMLArea.setEditable(false);
 		scrollTextArea = new JScrollPane(websiteHTMLArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		mainPanel.add(scrollTextArea, bagConstraints);
 
@@ -148,11 +146,8 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		buttonPanel.add(quitButton);
 
 		// adding panels to ContentPane
-		//getContentPane().add(headerPanel, BorderLayout.NORTH);
 		getContentPane().add(infoPanel, BorderLayout.NORTH);
-		//getContentPane().add(websitePanel, BorderLayout.CENTER);
 		getContentPane().add(mainPanel, BorderLayout.CENTER);
-       	//getContentPane().add(checkboxPanel, BorderLayout.WEST);
        	getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
        	JRootPane rootPane = SwingUtilities.getRootPane(executeButton);
@@ -167,12 +162,11 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
         tk = Toolkit.getDefaultToolkit();
         d = tk.getScreenSize();
 
-        setTitle("WebCrawler");
-        //setSize(d.width/2, d.height/3);
+        setTitle("Scraper v1.0");
         setLocation(d.width/3, d.height/3);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        //setBackground(Color.YELLOW);
         setVisible(true);
+        setResizable(false);
         pack();
     }// end setupMainFrame function
 
@@ -221,8 +215,15 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		System.out.println("Scraping the website: -> " + website);
 		website = "https://" + website;
 		try {
-			new WebScraper(website);
-			websiteHTMLArea.setText("Currently scraping: -> " + website);
+			webScraper = new WebScraper(website);
+			websiteHTMLArea.setText("Currently scraping: -> " + website + '\n');
+			websiteList = webScraper.getLinks();
+
+			for(int index = 0; index < websiteList.size(); index++)
+            {
+                updateComponent(websiteList.get(index));
+                index++;
+            }
 		}
 		catch(Exception e)
 		{
@@ -238,10 +239,10 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		cp.validate();
 	}
 
-	public void updateComponent(String text)
+	public void updateComponent(String s)
 	{
-		System.out.println("text variable contains: " + text);
-		websiteHTMLArea.append('\n' + text);
+		System.out.println("text variable contains: " + s);
+		websiteHTMLArea.append('\n' + s);
 		System.out.println("Inside updateComponent()");
 	}
 
