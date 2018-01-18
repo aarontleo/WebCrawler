@@ -31,8 +31,10 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 	ArrayList<String> 	arrayList;
 	DefaultListModel	dlm;
 	JList				websiteList;
-	String 		website, header;
-	GroupLayout			gLayout;
+	String 				website, header;
+	//GroupLayout		gLayout;
+	GridBagLayout		bagLayout;
+	GridBagConstraints	bagConstraints;
 	Container			cp;
 
 
@@ -44,21 +46,69 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		websiteList	= new JList(dlm);
 		header = "Filler text --------------------------------------------------------------------\n" +
 							"---------------------------------------------------------------------------------";
+
+		// initializing GridBagLayout components
+		bagConstraints = new GridBagConstraints();
+		bagConstraints.fill = GridBagConstraints.BOTH;
+		mainPanel = new JPanel();
+		mainPanel.setLayout(new GridBagLayout());
+
+		// creating JLabels
+		checkboxLabel = new JLabel("Select parse options:");
+		websiteFieldLabel = new JLabel("Website to parse:");
+		bagConstraints.gridx = 0;
+		bagConstraints.gridy = 0;
+		mainPanel.add(websiteFieldLabel, bagConstraints);
+
 		// creating JCheckBoxes
 		parseAllLinks = new JCheckBox("Parse all website links", true);
+		bagConstraints.weighty = 1;
+		bagConstraints.gridx = 0;
+		bagConstraints.gridy = 1;
 		parseAllLinks.setOpaque(false);
+		mainPanel.add(parseAllLinks, bagConstraints);
+
 		parseImages = new JCheckBox("Parse all website images");
+		bagConstraints.weighty = 1;
+		bagConstraints.gridx = 0;
+		bagConstraints.gridy = 2;
 		parseImages.setOpaque(false);
+		mainPanel.add(parseImages, bagConstraints);
+
 		parseEmails = new JCheckBox("Parse all Email addresses");
+		bagConstraints.weighty = 1;
+		bagConstraints.gridx = 0;
+		bagConstraints.gridy = 3;
 		parseEmails.setOpaque(false);
+		mainPanel.add(parseEmails, bagConstraints);
+
 		parsePersonalInfo = new JCheckBox("Parse all contact information");
+		bagConstraints.weighty = 1;
+		bagConstraints.gridx = 0;
+		bagConstraints.gridy = 4;
 		parsePersonalInfo.setOpaque(false);
+		mainPanel.add(parsePersonalInfo, bagConstraints);
+
 		parseSubDomains = new JCheckBox("Find all subdomains");
+		bagConstraints.weighty = 1;
+		bagConstraints.gridx = 0;
+		bagConstraints.gridy = 5;
 		parseSubDomains.setOpaque(false);
+		mainPanel.add(parseSubDomains, bagConstraints);
+
 		scanPorts = new JCheckBox("Scan ports");
+		bagConstraints.weighty = 1;
+		bagConstraints.gridx = 0;
+		bagConstraints.gridy = 6;
 		scanPorts.setOpaque(false);
+		mainPanel.add(scanPorts, bagConstraints);
+
 		scanVersionInfo = new JCheckBox("Scan for version information");
+		bagConstraints.weighty = 1;
+		bagConstraints.gridx = 0;
+		bagConstraints.gridy = 7;
 		scanVersionInfo.setOpaque(false);
+		mainPanel.add(scanVersionInfo, bagConstraints);
 
 		// creating Buttons
 		executeButton = new JButton("Execute");
@@ -71,52 +121,29 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 
 		// creating JTextFields
 		websiteField = new JTextField(30);
+		bagConstraints.gridx = 1;
+		bagConstraints.gridy = 0;
 		websiteField.getDocument().addDocumentListener(this);
+		mainPanel.add(websiteField, bagConstraints);
 
 		// creating JTextAreas
 		headerArea = new JTextArea(header);
 		headerArea.setEditable(false);
 
 		websiteHTMLArea = new JTextArea("TEST TEST TEST TEST");
+		bagConstraints.gridx = 1;
+		bagConstraints.gridy = 1;
+		bagConstraints.gridheight = 7;
 		websiteHTMLArea.setEditable(true);
 		scrollTextArea = new JScrollPane(websiteHTMLArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		//scrollTextArea.setBounds(0, 0, 200, 200);
+		mainPanel.add(scrollTextArea, bagConstraints);
 
-		// creating JLabels
-		checkboxLabel = new JLabel("Select parse options:");
-		websiteFieldLabel = new JLabel("Website to parse:");
-
-		// creating JPanels
-		mainPanel = new JPanel();
-		gLayout = new GroupLayout(mainPanel);
-		gLayout.setAutoCreateGaps(true);
-		gLayout.setAutoCreateContainerGaps(true);
-		mainPanel.setLayout(gLayout);
-		GroupLayout.SequentialGroup hGroup = gLayout.createSequentialGroup();
-			hGroup.addGroup(gLayout.createParallelGroup(LEADING).addComponent(websiteFieldLabel).addComponent(parseAllLinks).addComponent(parseImages).addComponent(parseEmails).addComponent(parsePersonalInfo).addComponent(parseSubDomains).addComponent(scanPorts).addComponent(scanVersionInfo));
-			hGroup.addGroup(gLayout.createParallelGroup(TRAILING).addComponent(websiteField).addComponent(scrollTextArea));
-		gLayout.setHorizontalGroup(hGroup);
-		GroupLayout.SequentialGroup vGroup = gLayout.createSequentialGroup();
-			vGroup.addGroup(gLayout.createParallelGroup(BASELINE).addComponent(websiteFieldLabel).addComponent(websiteField));
-			vGroup.addGroup(gLayout.createParallelGroup(BASELINE).addComponent(parseAllLinks).addComponent(scrollTextArea));
-			//vGroup.addGroup(gLayout.createParallelGroup(BASELINE).addComponent(parseAllLinks).addComponent(parseImages).addComponent(scrollList));
-			vGroup.addGroup(gLayout.createSequentialGroup().addComponent(parseAllLinks).addComponent(parseImages).addComponent(parseEmails).addComponent(parsePersonalInfo).addComponent(parseSubDomains).addComponent(scanPorts).addComponent(scanVersionInfo));
-			vGroup.addComponent(scrollTextArea);
-			//vGroup.addComponent(parseAllLinks);
-			//vGroup.addComponent(parseImages);
-			//vGroup.addComponent(parseEmails);
-			//vGroup.addComponent(parsePersonalInfo);
-			//vGroup.addComponent(parseSubDomains);
-			//vGroup.addComponent(scanPorts);
-			//vGroup.addComponent(scanVersionInfo);
-		gLayout.setVerticalGroup(vGroup);
-
+		// creating general JPanels
 		infoPanel = new JPanel();
 		infoPanel.setLayout(new FlowLayout());
 		infoPanel.add(headerArea);
 
 		buttonPanel = new JPanel();
-		//buttonPanel.setBackground(Color.RED);
 		buttonPanel.add(executeButton);
 		buttonPanel.add(quitButton);
 
@@ -215,7 +242,6 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 	{
 		System.out.println("text variable contains: " + text);
 		websiteHTMLArea.append('\n' + text);
-		//repaint();
 		System.out.println("Inside updateComponent()");
 	}
 
