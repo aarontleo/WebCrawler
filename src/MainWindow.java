@@ -175,8 +175,9 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
     	if(ae.getActionCommand().equals("EXECUTE"))
     	{
     		//selectedCheckBoxes();
+            System.out.println("Execute button pressed");
 			startScraper();
-    		System.out.println("The options selected are: -> ");
+    		//System.out.println("The options selected are: -> ");
     	}
     	else if(ae.getActionCommand().equals("QUIT"))
     	{
@@ -194,7 +195,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
         {
             executeButton.setEnabled(true);
         }
-    }
+    } // remove insertUpdate() function
 
     public void removeUpdate(DocumentEvent de)
     {
@@ -203,10 +204,10 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
         {
             executeButton.setEnabled(false);
         }
-    }
+    } // end removeUpdate() function
 
     public void changedUpdate(DocumentEvent de)
-    {}
+    {} // end changedUpdate() function
 
 
     public void startScraper()
@@ -221,7 +222,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 
 			for(int index = 0; index < websiteList.size(); index++)
             {
-                updateComponent(websiteList.get(index));
+                updateTextArea(websiteList.get(index));
                 index++;
             }
 		}
@@ -229,22 +230,22 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		{
 			e.printStackTrace();
 		}
-
-	}
+	}// end startScraper() function
 
 	public void updateUI()
 	{
+	    // Currently unused
+
 		cp = getContentPane();
 		cp.invalidate();
 		cp.validate();
-	}
+	}// end updateUI() function
 
-	public void updateComponent(String s)
+	public void updateTextArea(String s)
 	{
-		System.out.println("text variable contains: " + s);
+		System.out.println("String variable passed to updateComponent() is: " + s);
 		websiteHTMLArea.append('\n' + s);
-		System.out.println("Inside updateComponent()");
-	}
+	}// end updateTextArea() function
 
 
 

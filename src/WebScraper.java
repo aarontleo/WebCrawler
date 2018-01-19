@@ -4,7 +4,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.lang.*;
-import java.util.ArrayList;
+import java.util.*;
 
 
 public class WebScraper {
@@ -17,7 +17,7 @@ public class WebScraper {
         websiteList = new ArrayList<>();
         this.site = site;
         scrapeLinks();
-    }
+    }// end WebScraper class constructor
 
 
     public void scrapeLinks()
@@ -37,10 +37,10 @@ public class WebScraper {
         catch(Exception e){
             e.printStackTrace();
         }
-    }
+    }// end scrapeLinks() function
 
     public ArrayList<String> getLinks(){
         return websiteList;
-    }
+    }// end getLinks() function
 
-}
+}// end WebScraper class
