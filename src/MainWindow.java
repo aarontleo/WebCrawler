@@ -28,7 +28,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 
 	JScrollPane			scrollTextArea;
 
-	ArrayList<String> 	websiteList, imageList;
+	ArrayList<String> 	websiteList, imageList, emailList;
 
 	String 				website, header;
 	GridBagConstraints	bagConstraints;
@@ -41,6 +41,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		// initializing dependent variables
 		websiteList = new ArrayList<>();
 		imageList = new ArrayList<>();
+		emailList = new ArrayList<>();
 		header = "Filler text --------------------------------------------------------------------\n" +
 							"---------------------------------------------------------------------------------";
 		// initializing GridBagLayout components
@@ -229,7 +230,6 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 				for(int index = 0; index < websiteList.size(); index++)
 				{
 					updateTextArea(websiteList.get(index));
-					index++;
 				}
 			}
 			if(parseImages.isSelected())
@@ -240,13 +240,17 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 				for(int index = 0; index < imageList.size(); index++)
 				{
 					updateTextArea(imageList.get(index));
-					index++;
 				}
 			}
 			if(parseEmails.isSelected())
 			{
 				// Scrape all email addresses from the website -- should pass the website as a var to WebScraper() -- should get an ArrayList of emails in return
-
+                webScraper.scrapeEmails();
+                emailList = webScraper.getEmails();
+                for(int index = 0; index < emailList.size(); index++)
+                {
+                    updateTextArea(emailList.get(index));
+                }
 			}
 			if(parsePersonalInfo.isSelected())
 			{

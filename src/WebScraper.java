@@ -4,18 +4,22 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.lang.*;
+import java.lang.reflect.Array;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class WebScraper {
 
-    String              site, websiteLink, websiteImage;
-    ArrayList<String>   websiteList, imageList;
+    String              site, websiteLink, websiteImage, websiteEmail;
+    ArrayList<String>   websiteList, imageList, emailList;
 
     public WebScraper(String site)
     {
         websiteList = new ArrayList<>();
         imageList = new ArrayList<>();
+        emailList = new ArrayList<>();
         this.site = site;
     }// end WebScraper class constructor
 
@@ -58,9 +62,27 @@ public class WebScraper {
         }
     }// end scraperImages() function
 
-    public ArrayList<String> getLinks(){
-        return websiteList;
-    }// end getLinks() function
+    public void scrapeEmails()
+    {
+        try {
+            System.out.println("Scraping Emails!");
+            Document websitePage = Jsoup.connect(site).get();
+            Pattern p = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+");
+            Matcher m = p.matcher(websitePage.text());
+
+            while(m.find())
+            {
+                System.out.println("Email found on " + site + " , Email address: -> " + m.group());
+                emailList.add(m.group());
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }// end scrapeEmails() function
+
+    public ArrayList<String> getLinks(){ return websiteList; }// end getLinks() function
     public ArrayList<String> getImages() { return imageList; }// end getImages() function
+    public ArrayList<String> getEmails() { return emailList; }// end getEmails() function
 
 }// end WebScraper class
