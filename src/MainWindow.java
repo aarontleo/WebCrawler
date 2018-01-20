@@ -28,7 +28,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 
 	JScrollPane			scrollTextArea;
 
-	ArrayList<String> 	websiteList;
+	ArrayList<String> 	websiteList, imageList;
 
 	String 				website, header;
 	GridBagConstraints	bagConstraints;
@@ -40,9 +40,9 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 	{
 		// initializing dependent variables
 		websiteList = new ArrayList<>();
+		imageList = new ArrayList<>();
 		header = "Filler text --------------------------------------------------------------------\n" +
 							"---------------------------------------------------------------------------------";
-
 		// initializing GridBagLayout components
 		bagConstraints = new GridBagConstraints();
 		bagConstraints.fill = GridBagConstraints.BOTH;
@@ -176,7 +176,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
     	{
     		//selectedCheckBoxes();
             System.out.println("Execute button pressed");
-			startScraper();
+			initializeScraper();
     		//System.out.println("The options selected are: -> ");
     	}
     	else if(ae.getActionCommand().equals("QUIT"))
@@ -210,21 +210,64 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
     {} // end changedUpdate() function
 
 
-    public void startScraper()
+    public void initializeScraper()
 	{
 		website = websiteField.getText().trim();
+		websiteHTMLArea.setText(null);
 		System.out.println("Scraping the website: -> " + website);
-		website = "https://" + website;
+		website = "http://" + website;
 		try {
 			webScraper = new WebScraper(website);
 			websiteHTMLArea.setText("Currently scraping: -> " + website + '\n');
-			websiteList = webScraper.getLinks();
 
-			for(int index = 0; index < websiteList.size(); index++)
-            {
-                updateTextArea(websiteList.get(index));
-                index++;
-            }
+
+			if(parseAllLinks.isSelected())
+			{
+				// Scrape all links from the website -- should pass the website as a var to WebScraper() -- should get links as an ArrayList as a return value
+				webScraper.scrapeLinks();
+				websiteList = webScraper.getLinks();
+				for(int index = 0; index < websiteList.size(); index++)
+				{
+					updateTextArea(websiteList.get(index));
+					index++;
+				}
+			}
+			if(parseImages.isSelected())
+			{
+				// Scrape all images from the website -- should pass the website as a var to WebScraper() -- should get an ArrayList of images in return?
+				webScraper.scrapeImages();
+				imageList = webScraper.getImages();
+				for(int index = 0; index < imageList.size(); index++)
+				{
+					updateTextArea(imageList.get(index));
+					index++;
+				}
+			}
+			if(parseEmails.isSelected())
+			{
+				// Scrape all email addresses from the website -- should pass the website as a var to WebScraper() -- should get an ArrayList of emails in return
+
+			}
+			if(parsePersonalInfo.isSelected())
+			{
+
+
+			}
+			if(parseSubDomains.isSelected())
+			{
+
+			}
+			if(scanPorts.isSelected())
+			{
+				//
+
+			}
+			if(scanVersionInfo.isSelected())
+			{
+
+			}
+
+
 		}
 		catch(Exception e)
 		{
@@ -245,8 +288,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 	{
 		System.out.println("String variable passed to updateComponent() is: " + s);
 		websiteHTMLArea.append('\n' + s);
+		websiteHTMLArea.append("\n");
 	}// end updateTextArea() function
-
-
 
 }// end MainWindow class
