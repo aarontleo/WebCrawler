@@ -34,6 +34,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 	GridBagConstraints	bagConstraints;
 	Container			cp;
 	WebScraper          webScraper;
+	ResultsWindow		resultsWindow;
 
 
 	public MainWindow()
@@ -175,7 +176,6 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
     {
     	if(ae.getActionCommand().equals("EXECUTE"))
     	{
-    		//selectedCheckBoxes();
             System.out.println("Execute button pressed");
 			initializeScraper();
     		//System.out.println("The options selected are: -> ");
@@ -219,6 +219,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		website = "http://" + website;
 		try {
 			webScraper = new WebScraper(website);
+			resultsWindow = new ResultsWindow();
 			websiteHTMLArea.setText("Currently scraping: -> " + website + '\n');
 
 
@@ -227,6 +228,9 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 				// Scrape all links from the website -- should pass the website as a var to WebScraper() -- should get links as an ArrayList as a return value
 				webScraper.scrapeLinks();
 				websiteList = webScraper.getLinks();
+
+				resultsWindow.setResults(websiteList);
+
 				for(int index = 0; index < websiteList.size(); index++)
 				{
 					updateTextArea(websiteList.get(index));
@@ -237,6 +241,9 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 				// Scrape all images from the website -- should pass the website as a var to WebScraper() -- should get an ArrayList of images in return?
 				webScraper.scrapeImages();
 				imageList = webScraper.getImages();
+
+				resultsWindow.setResults(imageList);
+
 				for(int index = 0; index < imageList.size(); index++)
 				{
 					updateTextArea(imageList.get(index));
@@ -247,6 +254,9 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 				// Scrape all email addresses from the website -- should pass the website as a var to WebScraper() -- should get an ArrayList of emails in return
                 webScraper.scrapeEmails();
                 emailList = webScraper.getEmails();
+
+				resultsWindow.setResults(emailList);
+
                 for(int index = 0; index < emailList.size(); index++)
                 {
                     updateTextArea(emailList.get(index));
@@ -263,15 +273,12 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 			}
 			if(scanPorts.isSelected())
 			{
-				//
 
 			}
 			if(scanVersionInfo.isSelected())
 			{
 
 			}
-
-
 		}
 		catch(Exception e)
 		{
