@@ -12,9 +12,8 @@ import java.util.regex.Pattern;
 
 public class WebScraper {
 
-    String              site, websiteLink, websiteImage, websiteEmail;
+    String              site, websiteLink, websiteImage;
     ArrayList<String>   websiteList, imageList, emailList;
-    ResultsWindow       resultsWindow;
 
     public WebScraper(String site)
     {
@@ -22,7 +21,6 @@ public class WebScraper {
         imageList = new ArrayList<>();
         emailList = new ArrayList<>();
         this.site = site;
-        resultsWindow = new ResultsWindow();
     }// end WebScraper class constructor
 
 

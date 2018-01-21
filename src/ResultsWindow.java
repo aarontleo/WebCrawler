@@ -18,9 +18,9 @@ public class ResultsWindow extends JDialog
         ta2 = new JTextArea("");
         ta3 = new JTextArea("");
         resultsPane = new JTabbedPane();
-        createTabs();
         setTitle("Results");
         setupDialog();
+        createTabs();
     }// end ResultsTab() class constructor
 
     void setupDialog()
@@ -29,7 +29,7 @@ public class ResultsWindow extends JDialog
         Dimension   d;
         tk = Toolkit.getDefaultToolkit();
         d = tk.getScreenSize();
-        setSize(d.width/4, d.height/4);
+        setSize((d.width/4)*2, (d.height/4)*2);
         setLocation(d.width/3, d.height/3);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setVisible(true);
