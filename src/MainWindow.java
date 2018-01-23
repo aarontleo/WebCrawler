@@ -43,8 +43,8 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		websiteList = new ArrayList<>();
 		imageList = new ArrayList<>();
 		emailList = new ArrayList<>();
-		header = "Filler text --------------------------------------------------------------------\n" +
-							"---------------------------------------------------------------------------------";
+		header = "WebScraper v1.0\n" + "Enter a website URL and select the options to be displayed below.\n" +
+                    "The following checkboxes work as intended:\n" + "      - Parse all website links\n      - Parse all website images\n      - Parse all Email addresses\n";
 		// initializing GridBagLayout components
 		bagConstraints = new GridBagConstraints();
 		bagConstraints.fill = GridBagConstraints.BOTH;
@@ -128,7 +128,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		headerArea = new JTextArea(header);
 		headerArea.setEditable(false);
 
-		websiteHTMLArea = new JTextArea("TEST TEST TEST TEST");
+		websiteHTMLArea = new JTextArea("Debugging Information:\n");
 		bagConstraints.gridx = 1;
 		bagConstraints.gridy = 1;
 		bagConstraints.gridheight = 7;
