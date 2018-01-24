@@ -14,6 +14,7 @@ public class WebScraper {
 
     String              site, websiteLink, websiteImage;
     ArrayList<String>   websiteList, imageList, emailList;
+    MainWindow          window;
 
     public WebScraper(String site)
     {
@@ -28,6 +29,7 @@ public class WebScraper {
     {
         try {
             System.out.println("Scraping Links!");
+            window.updateTextArea("Scraping Links!");
             Document websitePage = Jsoup.connect(site).get();
             Elements links = websitePage.select("a[href]");
 
@@ -40,6 +42,7 @@ public class WebScraper {
         }
         catch(Exception e){
             e.printStackTrace();
+            window.updateTextArea("Exception occured in scrapeLinks()");
         }
     }// end scrapeLinks() function
 
@@ -47,6 +50,7 @@ public class WebScraper {
     {
         try {
             System.out.println("Scraping Images!");
+            window.updateTextArea("Scraping Images!");
             Document websitePage = Jsoup.connect(site).get();
             Elements images = websitePage.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
 
@@ -59,6 +63,7 @@ public class WebScraper {
         }
         catch(Exception e) {
             e.printStackTrace();
+            window.updateTextArea("Exception occured in scrapeImages()");
         }
     }// end scraperImages() function
 
@@ -66,6 +71,7 @@ public class WebScraper {
     {
         try {
             System.out.println("Scraping Emails!");
+            window.updateTextArea("Scraping Emails!");
             Document websitePage = Jsoup.connect(site).get();
             Pattern p = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+");
             Matcher m = p.matcher(websitePage.text());
@@ -78,6 +84,7 @@ public class WebScraper {
         }
         catch(Exception e) {
             e.printStackTrace();
+            window.updateTextArea("Exception occured in scrapeEmails()");
         }
     }// end scrapeEmails() function
 

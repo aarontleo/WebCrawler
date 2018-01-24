@@ -177,11 +177,13 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
     	if(ae.getActionCommand().equals("EXECUTE"))
     	{
             System.out.println("Execute button pressed");
+            updateTextArea("Execute button pressed");
 			initializeScraper();
     		//System.out.println("The options selected are: -> ");
     	}
     	else if(ae.getActionCommand().equals("QUIT"))
     	{
+			updateTextArea("Quit button pressed");
     		System.exit(1);
     	}
     	else
@@ -214,13 +216,13 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
     public void initializeScraper()
 	{
 		website = websiteField.getText().trim();
-		websiteHTMLArea.setText(null);
+		//websiteHTMLArea.setText(null);
 		System.out.println("Scraping the website: -> " + website);
 		website = "http://" + website;
 		try {
 			webScraper = new WebScraper(website);
 			resultsWindow = new ResultsWindow();
-			websiteHTMLArea.setText("Currently scraping: -> " + website + '\n');
+			websiteHTMLArea.append("Currently scraping: -> " + website + '\n');
 
 
 			if(parseAllLinks.isSelected())
@@ -228,39 +230,39 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 				// Scrape all links from the website -- should pass the website as a var to WebScraper() -- should get links as an ArrayList as a return value
 				webScraper.scrapeLinks();
 				websiteList = webScraper.getLinks();
-
 				resultsWindow.setResults(websiteList);
-
+/*
 				for(int index = 0; index < websiteList.size(); index++)
 				{
 					updateTextArea(websiteList.get(index));
 				}
+*/
 			}
 			if(parseImages.isSelected())
 			{
 				// Scrape all images from the website -- should pass the website as a var to WebScraper() -- should get an ArrayList of images in return?
 				webScraper.scrapeImages();
 				imageList = webScraper.getImages();
-
 				resultsWindow.setResults(imageList);
-
+/*
 				for(int index = 0; index < imageList.size(); index++)
 				{
 					updateTextArea(imageList.get(index));
 				}
+*/
 			}
 			if(parseEmails.isSelected())
 			{
 				// Scrape all email addresses from the website -- should pass the website as a var to WebScraper() -- should get an ArrayList of emails in return
                 webScraper.scrapeEmails();
                 emailList = webScraper.getEmails();
-
 				resultsWindow.setResults(emailList);
-
+/*
                 for(int index = 0; index < emailList.size(); index++)
                 {
                     updateTextArea(emailList.get(index));
                 }
+*/
 			}
 			if(parsePersonalInfo.isSelected())
 			{
@@ -283,6 +285,7 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			updateTextArea("Exception occured in initializeScraper()");
 		}
 	}// end startScraper() function
 
@@ -299,7 +302,6 @@ class MainWindow extends JFrame implements ActionListener, DocumentListener
 	{
 		System.out.println("String variable passed to updateComponent() is: " + s);
 		websiteHTMLArea.append('\n' + s);
-		websiteHTMLArea.append("\n");
 	}// end updateTextArea() function
 
 }// end MainWindow class

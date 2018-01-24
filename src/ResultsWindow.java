@@ -10,9 +10,14 @@ public class ResultsWindow extends JDialog
     JTabbedPane         resultsPane;
     ArrayList<String>   results;
     Container           cp;
+    MainWindow          window;
 
     public ResultsWindow()
     {
+
+        if(resultsPane != null)
+        { cp.remove(resultsPane); }
+
         cp = getContentPane();
         ta1 = new JTextArea("");
         ta2 = new JTextArea("");
@@ -55,6 +60,7 @@ public class ResultsWindow extends JDialog
         resultsPane.addTab("Email Results", sp3);
 
         cp.add(resultsPane, BorderLayout.CENTER);
+        window.updateTextArea("Created Results Tabs");
     }
 
 
@@ -63,6 +69,7 @@ public class ResultsWindow extends JDialog
         if(ta1.getText().equals(""))
         {
             this.results = results;
+            window.updateTextArea("Writing Results to Tab #1");
             for(int index = 0; index < results.size(); index++)
             {
                 ta1.append('\n' + results.get(index));
@@ -71,6 +78,7 @@ public class ResultsWindow extends JDialog
         else if(ta2.getText().equals(""))
         {
             this.results = results;
+            window.updateTextArea("Writing Results to Tab #2");
             for(int index = 0; index < results.size(); index++)
             {
                 ta2.append('\n' + results.get(index));
@@ -79,6 +87,7 @@ public class ResultsWindow extends JDialog
         else if(ta3.getText().equals(""))
         {
             this.results = results;
+            window.updateTextArea("Writing Results to Tab #3");
             for(int index = 0; index < results.size(); index++)
             {
                 ta3.append('\n' + results.get(index));
@@ -87,6 +96,7 @@ public class ResultsWindow extends JDialog
         else
         {
             System.out.println("Something went wrong when trying to display results!");
+            window.updateTextArea("Error in setResults()");
             JOptionPane.showMessageDialog(null, "Error displaying results!", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
